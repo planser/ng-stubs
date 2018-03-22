@@ -1,0 +1,59 @@
+{
+  "name": "ng-stubs",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/planser/ng-stubs.git"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "compile": "tsc",
+    "test": "jest --watch"
+  },
+  "jest": {
+    "testRegex": "(\\.(test|spec))\\.(ts|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
+    "transform": {
+      "^.+\\.(ts)$": "<rootDir>/test/preprocessor.js"
+    }
+  },
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "Angular",
+    "Test",
+    "Stub",
+    "Component",
+    "Directive"
+  ],
+  "author": "Peter Lanser",
+  "license": "MIT",
+  "devDependencies": {
+    "@angular/common": "^5.2.2",
+    "@angular/compiler": "^5.2.2",
+    "@angular/core": "^5.2.2",
+    "@angular/forms": "^5.2.2",
+    "@angular/platform-browser": "^5.2.2",
+    "@angular/platform-browser-dynamic": "^5.2.2",
+    "@types/jest": "^22.1.1",
+    "jest": "^22.1.4",
+    "jest-zone-patch": "0.0.8",
+    "rxjs": "^5.5.0",
+    "ts-jest": "^22.0.3",
+    "typescript": "^2.6.2",
+    "zone.js": "^0.8.4"
+  },
+  "peerDependencies": {
+    "@angular/common": "^5.2.2",
+    "@angular/compiler": "^5.2.2",
+    "@angular/core": "^5.2.2",
+    "@angular/forms": "^5.2.2",
+    "@angular/platform-browser": "^5.2.2",
+    "@angular/platform-browser-dynamic": "^5.2.2"
+  }
+}
