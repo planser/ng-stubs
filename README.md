@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/planser/ng-stubs.svg?branch=master)](https://travis-ci.org/planser/ng-stubs)
+
 # ng-stubs
 Create stubs for your Angular components and directives dynamically.
 
