@@ -10,7 +10,8 @@
   "scripts": {
     "clean": "rm -rf dist",
     "compile": "tsc",
-    "test": "jest --watch"
+    "test-watch": "jest --watch",
+    "test": "jest"
   },
   "jest": {
     "testRegex": "(\\.(test|spec))\\.(ts|js)$",
