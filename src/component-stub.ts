@@ -1,8 +1,29 @@
 import { StubbedComponent } from './stubbed-component';
 import { ControlValueAccessors } from './control-value-accessors';
 import { StubOptions } from './stub-options';
-import { annotationFor, inputAnnotationsBindingsFor, outputAnnotationsBindingsFor, inputPropMetadataBindingsFor, outputPropMetadataBindingsFor, providesNgValueAccessor, isComponent, isFunction, createSpy } from './util';
-import { Type, Component, forwardRef, Injectable, OnDestroy, ElementRef, Input, Output, EventEmitter, Directive } from '@angular/core';
+import {
+    annotationFor,
+    createSpy,
+    inputAnnotationsBindingsFor,
+    inputPropMetadataBindingsFor,
+    isComponent,
+    isFunction,
+    outputAnnotationsBindingsFor,
+    outputPropMetadataBindingsFor,
+    providesNgValueAccessor
+} from './util';
+import {
+    Component,
+    Directive,
+    ElementRef,
+    EventEmitter,
+    forwardRef,
+    Inject,
+    Input,
+    OnDestroy,
+    Output,
+    Type
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions): StubbedComponent<T> {
@@ -41,12 +62,11 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
 
   const instances = [];
 
-  @Injectable()
   class Comp implements OnDestroy {
 
     private __index: number;
 
-    constructor(/*private __elementRef: ElementRef*/) {
+    constructor(@Inject(ElementRef) private __elementRef: ElementRef) {
       this.__index = instances.length;
       instances.push(this);
     }
@@ -70,13 +90,10 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
     });
   });
 
-  // TODO: Test - eg parent component calls method on child component
   Object.keys(component.prototype)
     .filter(p => p != "constructor")
-    // TODO: what happens with inherited functions?
     .filter(p => isFunction(component.prototype[p]))
     .filter(p => Comp.prototype.hasOwnProperty(p) == false)
-    // TODO: install spy instead of empty function
     .forEach(p => { Comp.prototype[p] = createSpy() });
 
   return new StubbedComponent(instances, isComponent(annotation) ? Component(metadata)(Comp) : Directive(metadata)(Comp), controlValueAccessors);

@@ -191,7 +191,6 @@ describe("ng-stubs - components ", () => {
         expect(referencedComponentStub.instance.aMethod).toHaveBeenCalledWith("aParam");
     });
 
-    /*
     it("supports getting instances by css class", () => {
         expect(multipleInstancesComponentStub.instances.length).toEqual(3);
 
@@ -204,6 +203,5 @@ describe("ng-stubs - components ", () => {
         expect(bInstances.length).toEqual(1);
         expect(bInstances[0].anInput).toEqual("anInputB1");
     });
-    */
 
 });

@@ -11,11 +11,9 @@ export class StubbedComponent<T> {
     return this.instances[0] as T;
   }
 
-  /*
   public byClass(clazz: string): T[] {
     return this.instances.filter(i => (<any>i).__elementRef.nativeElement.classList.contains(clazz) as T) as T[];
   }
-  */
 
   public get mostRecent(): T {
     if (this.instances.length == 0) throw new Error("No instance created yet.");
