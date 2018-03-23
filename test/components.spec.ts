@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from "@angular/core";
-import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule } from "@angular/forms";
-import { ComponentFixture, async, TestBed } from "@angular/core/testing";
+import { Component, EventEmitter, forwardRef, Input, Output, ViewChild } from "@angular/core";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { StubbedComponent } from "../src/stubbed-component";
 import { ComponentStub } from "../src/component-stub";
 
@@ -66,6 +66,17 @@ class MultipleInstancesComponent {
 }
 
 @Component({
+    selector: "app-referenced",
+    template: "<div></div>"
+})
+class ReferencedComponent {
+
+    public aMethod(param: string): void {
+    }
+
+}
+
+@Component({
     selector: "app-root",
     template: `
         <app-no-inputs-no-outputs class="a-class"></app-no-inputs-no-outputs>
@@ -74,9 +85,14 @@ class MultipleInstancesComponent {
         <app-multiple-instances [anInput]="'anInputA1'" class="a-class"></app-multiple-instances>
         <app-multiple-instances [anInput]="'anInputB1'" class="b-class"></app-multiple-instances>
         <app-multiple-instances [anInput]="'anInputA2'" class="a-class"></app-multiple-instances>
+        <app-referenced #ref></app-referenced>
     `
 })
 class AppComponent {
+
+    @ViewChild("ref")
+    referencedComponent: ReferencedComponent;
+
     model: string;
 
     onOne(event: string): void { }
@@ -84,6 +100,11 @@ class AppComponent {
     onThree(event: string): void { }
 
     onModelChange(event: string): void { }
+
+    callAMethodOnReferencedComponent(param: string): void {
+        this.referencedComponent.aMethod(param);
+    }
+
 }
 
 describe("ng-stubs - components ", () => {
@@ -95,12 +116,14 @@ describe("ng-stubs - components ", () => {
     let inputsAndOutputsComponentStub: StubbedComponent<InputsAndOutputsComponent>;
     let controlValueAccessorComponentStub: StubbedComponent<ControlValueAccessorComponent>;
     let multipleInstancesComponentStub: StubbedComponent<MultipleInstancesComponent>;
+    let referencedComponentStub: StubbedComponent<ReferencedComponent>;
 
     beforeEach(async(() => {
         noInputsNoOutputsComponentStub = ComponentStub(NoInputsNoOutputsComponent);
         inputsAndOutputsComponentStub = ComponentStub(InputsAndOutputsComponent);
         controlValueAccessorComponentStub = ComponentStub(ControlValueAccessorComponent);
         multipleInstancesComponentStub = ComponentStub(MultipleInstancesComponent);
+        referencedComponentStub = ComponentStub(ReferencedComponent);
 
         TestBed.configureTestingModule({
             imports: [FormsModule],
@@ -109,6 +132,7 @@ describe("ng-stubs - components ", () => {
                 inputsAndOutputsComponentStub.type,
                 controlValueAccessorComponentStub.type,
                 multipleInstancesComponentStub.type,
+                referencedComponentStub.type,
                 AppComponent
             ],
         }).compileComponents();
@@ -161,6 +185,11 @@ describe("ng-stubs - components ", () => {
             });
         });
     }));
+
+    it("supports spying on any method", () => {
+        component.callAMethodOnReferencedComponent("aParam");
+        expect(referencedComponentStub.instance.aMethod).toHaveBeenCalledWith("aParam");
+    });
 
     /*
     it("supports getting instances by css class", () => {
