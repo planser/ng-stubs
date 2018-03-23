@@ -11,7 +11,7 @@ export class StubbedComponent<T> {
     return this.instances[0] as T;
   }
 
-  public byClass(clazz: string): T[] {
+  public byCssClass(clazz: string): T[] {
     return this.instances.filter(i => (<any>i).__elementRef.nativeElement.classList.contains(clazz) as T) as T[];
   }
 

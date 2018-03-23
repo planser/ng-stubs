@@ -95,11 +95,11 @@ class AppComponent {
 
     model: string;
 
-    onOne(event: string): void { }
-    onTwo(event: string): void { }
-    onThree(event: string): void { }
+    onOne = jest.fn();
+    onTwo = jest.fn();
+    onThree = jest.fn()
 
-    onModelChange(event: string): void { }
+    onModelChange = jest.fn();
 
     callAMethodOnReferencedComponent(param: string): void {
         this.referencedComponent.aMethod(param);
@@ -155,28 +155,23 @@ describe("ng-stubs - components ", () => {
     });
 
     it("supports components having outputs", () => {
-        component.onOne = jest.fn();
         inputsAndOutputsComponentStub.instance.simpleOutput.emit("one");
         expect(component.onOne).toHaveBeenCalledWith("one");
 
-        component.onTwo = jest.fn();
         inputsAndOutputsComponentStub.instance.aliasedOutput.emit("two");
         expect(component.onTwo).toHaveBeenCalledWith("two");
 
-        component.onThree = jest.fn();
         inputsAndOutputsComponentStub.instance["annotationOutput"].emit("three");
         expect(component.onThree).toHaveBeenCalledWith("three");
     });
 
     it("supports components providing a control value accessor", async(() => {
-        controlValueAccessorComponentStub.instance.writeValue = jest.fn();
         component.model = "this is the model";
         fixture.detectChanges();
 
         fixture.whenStable().then(() => {
             expect(controlValueAccessorComponentStub.controlValueAccessor.writeValue).toHaveBeenCalledWith("this is the model");
 
-            component.onModelChange = jest.fn();
             controlValueAccessorComponentStub.controlValueAccessor.propagateValue("changed model");
             fixture.detectChanges();
 
@@ -194,12 +189,12 @@ describe("ng-stubs - components ", () => {
     it("supports getting instances by css class", () => {
         expect(multipleInstancesComponentStub.instances.length).toEqual(3);
 
-        const aInstances = multipleInstancesComponentStub.byClass("a-class");
+        const aInstances = multipleInstancesComponentStub.byCssClass("a-class");
         expect(aInstances.length).toEqual(2);
         expect(aInstances[0].anInput).toEqual("anInputA1");
         expect(aInstances[1].anInput).toEqual("anInputA2");
 
-        const bInstances = multipleInstancesComponentStub.byClass("b-class");
+        const bInstances = multipleInstancesComponentStub.byCssClass("b-class");
         expect(bInstances.length).toEqual(1);
         expect(bInstances[0].anInput).toEqual("anInputB1");
     });
