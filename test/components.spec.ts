@@ -1,5 +1,6 @@
 import { Component, EventEmitter, forwardRef, Input, Output, ViewChild } from "@angular/core";
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { By } from '@angular/platform-browser';
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { StubbedComponent } from "../src/stubbed-component";
 import { ComponentStub } from "../src/component-stub";
@@ -186,15 +187,26 @@ describe("ng-stubs - components ", () => {
         expect(referencedComponentStub.instance.aMethod).toHaveBeenCalledWith("aParam");
     });
 
-    it("supports getting instances by css class", () => {
+    it("supports querying a single instance", () => {
+        expect(multipleInstancesComponentStub.query(By.css("app-multiple-instances.does-not-exist"), fixture.debugElement)).toBeNull();
+
+        const aInstance = multipleInstancesComponentStub.query(By.css("app-multiple-instances.a-class"), fixture.debugElement);
+        expect(aInstance.anInput).toEqual("anInputA1");
+
+        const bInstance = multipleInstancesComponentStub.query(By.css("app-multiple-instances.b-class"), fixture.debugElement);
+        expect(bInstance.anInput).toEqual("anInputB1");
+    });
+
+    it("supports querying multiple instances", () => {
+        expect(multipleInstancesComponentStub.queryAll(By.css("app-multiple-instances.does-not-exist"), fixture.debugElement)).toEqual([]);
         expect(multipleInstancesComponentStub.instances.length).toEqual(3);
 
-        const aInstances = multipleInstancesComponentStub.byCssClass("a-class");
+        const aInstances = multipleInstancesComponentStub.queryAll(By.css("app-multiple-instances.a-class"), fixture.debugElement);
         expect(aInstances.length).toEqual(2);
         expect(aInstances[0].anInput).toEqual("anInputA1");
         expect(aInstances[1].anInput).toEqual("anInputA2");
 
-        const bInstances = multipleInstancesComponentStub.byCssClass("b-class");
+        const bInstances = multipleInstancesComponentStub.queryAll(By.css("app-multiple-instances.b-class"), fixture.debugElement);
         expect(bInstances.length).toEqual(1);
         expect(bInstances[0].anInput).toEqual("anInputB1");
     });
