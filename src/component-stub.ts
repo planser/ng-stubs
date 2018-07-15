@@ -11,8 +11,6 @@ import {
     outputAnnotationsBindingsFor,
     outputPropMetadataBindingsFor,
     providesNgValueAccessor,
-    viewChildPropMetadataQueriesFor,
-    viewChildrenPropMetadataQueriesFor,
     contentChildrenPropMetadataQueriesFor,
     contentChildPropMetadataQueriesFor
 } from './util';
