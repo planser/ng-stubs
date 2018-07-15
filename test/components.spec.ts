@@ -1,7 +1,7 @@
-import { Component, EventEmitter, forwardRef, Input, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, forwardRef, Input, Output, ViewChild, QueryList, ContentChild, ContentChildren, ElementRef, ViewChildren } from "@angular/core";
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { By } from '@angular/platform-browser';
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed, fakeAsync } from "@angular/core/testing";
 import { StubbedComponent } from "../src/stubbed-component";
 import { ComponentStub } from "../src/component-stub";
 
@@ -78,6 +78,26 @@ class ReferencedComponent {
 }
 
 @Component({
+    selector: "app-queries",
+    template: "<div><div #viewDiv></div><ng-content></ng-content></div>"
+})
+class QueriesComponent {
+
+    @ViewChild("viewDiv")
+    viewChild: ElementRef;
+
+    @ViewChildren("viewDiv")
+    viewChildren: QueryList<ElementRef>;
+
+    @ContentChild("contentDiv")
+    contentChild: ElementRef;
+
+    @ContentChildren("contentDiv")
+    contentChildren: QueryList<ElementRef>;
+
+}
+
+@Component({
     selector: "app-root",
     template: `
         <app-no-inputs-no-outputs class="a-class"></app-no-inputs-no-outputs>
@@ -87,6 +107,7 @@ class ReferencedComponent {
         <app-multiple-instances [anInput]="'anInputB1'" class="b-class"></app-multiple-instances>
         <app-multiple-instances [anInput]="'anInputA2'" class="a-class"></app-multiple-instances>
         <app-referenced #ref></app-referenced>
+        <app-queries><div #contentDiv></div></app-queries>
     `
 })
 class AppComponent {
@@ -118,6 +139,7 @@ describe("ng-stubs - components ", () => {
     let controlValueAccessorComponentStub: StubbedComponent<ControlValueAccessorComponent>;
     let multipleInstancesComponentStub: StubbedComponent<MultipleInstancesComponent>;
     let referencedComponentStub: StubbedComponent<ReferencedComponent>;
+    let queriesComponentStub: StubbedComponent<QueriesComponent>;
 
     beforeEach(async(() => {
         noInputsNoOutputsComponentStub = ComponentStub(NoInputsNoOutputsComponent);
@@ -125,6 +147,7 @@ describe("ng-stubs - components ", () => {
         controlValueAccessorComponentStub = ComponentStub(ControlValueAccessorComponent);
         multipleInstancesComponentStub = ComponentStub(MultipleInstancesComponent);
         referencedComponentStub = ComponentStub(ReferencedComponent);
+        queriesComponentStub = ComponentStub(QueriesComponent);
 
         TestBed.configureTestingModule({
             imports: [FormsModule],
@@ -134,6 +157,7 @@ describe("ng-stubs - components ", () => {
                 controlValueAccessorComponentStub.type,
                 multipleInstancesComponentStub.type,
                 referencedComponentStub.type,
+                queriesComponentStub.type,
                 AppComponent
             ],
         }).compileComponents();
@@ -209,6 +233,16 @@ describe("ng-stubs - components ", () => {
         const bInstances = multipleInstancesComponentStub.queryAll(By.css("app-multiple-instances.b-class"), fixture.debugElement);
         expect(bInstances.length).toEqual(1);
         expect(bInstances[0].anInput).toEqual("anInputB1");
+    });
+
+    it("supports content queries", fakeAsync(() => {
+        expect(queriesComponentStub.instance.contentChild).toBeDefined();
+        expect(queriesComponentStub.instance.contentChildren.length).toBe(1);
+    }));
+
+    it("does not support view queries as the view (template) is an implementation detail of the stubbed component", () => {
+        expect(queriesComponentStub.instance.viewChild).not.toBeDefined();
+        expect(queriesComponentStub.instance.viewChildren).not.toBeDefined();
     });
 
 });
