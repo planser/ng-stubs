@@ -1,4 +1,4 @@
-import { ɵReflectionCapabilities, Type, Query } from '@angular/core';
+import { Query, Type, ɵReflectionCapabilities } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface BindingDescriptor {
@@ -19,8 +19,26 @@ export function isComponent(a: any): boolean {
   return a.ngMetadataName == "Component";
 }
 
-export function isFunction(param): boolean {
-  return param != null && {}.toString.call(param) === '[object Function]';
+export function isFunction(target, property): boolean {
+  return target && property && target[property] && {}.toString.call(target[property]) === '[object Function]';
+}
+
+export function isComputedProperty(target, property): boolean {
+  const descriptor = Object.getOwnPropertyDescriptor(target, property);
+  return isFunction(descriptor, "get") || isFunction(descriptor, "set");
+}
+
+export function spyOnComputedProperty(target, property): void {
+  const descriptor = Object.getOwnPropertyDescriptor(target, property);
+
+  Object.defineProperty(target, property, {
+    get: isFunction(descriptor, "get") ? createSpy() : undefined,
+    set: isFunction(descriptor, "set") ? createSpy() : undefined
+  });
+}
+
+export function spyOnMethod(target, property): void {
+  target[property] = createSpy();
 }
 
 export function annotationFor(component: Type<any>): any {

@@ -3,19 +3,22 @@ import { ControlValueAccessors } from './control-value-accessors';
 import { StubOptions } from './stub-options';
 import {
     annotationFor,
-    createSpy,
+    contentChildPropMetadataQueriesFor,
+    contentChildrenPropMetadataQueriesFor,
     inputAnnotationsBindingsFor,
     inputPropMetadataBindingsFor,
     isComponent,
-    isFunction,
+    isComputedProperty,
     outputAnnotationsBindingsFor,
     outputPropMetadataBindingsFor,
     providesNgValueAccessor,
-    contentChildrenPropMetadataQueriesFor,
-    contentChildPropMetadataQueriesFor
+    spyOnComputedProperty,
+    spyOnMethod
 } from './util';
 import {
     Component,
+    ContentChild,
+    ContentChildren,
     Directive,
     ElementRef,
     EventEmitter,
@@ -24,11 +27,7 @@ import {
     Input,
     OnDestroy,
     Output,
-    Type,
-    ViewChild,
-    ViewChildren,
-    ContentChild,
-    ContentChildren
+    Type
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -101,9 +100,15 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
 
   Object.keys(component.prototype)
     .filter(p => p != "constructor")
-    .filter(p => isFunction(component.prototype[p]))
     .filter(p => Comp.prototype.hasOwnProperty(p) == false)
-    .forEach(p => { Comp.prototype[p] = createSpy() });
+    .forEach(p => {
+        // TODO: Can we just ignore computed properties? Is it an implementaiton detail? What about readonly properties? Is it tackled by the interface anyway as we would get a compile error anyway?
+        if (isComputedProperty(Comp.prototype, p)) {
+            spyOnComputedProperty(Comp.prototype, p);
+        } else {
+            spyOnMethod(Comp.prototype, p);
+        }
+    });
 
   return new StubbedComponent(instances, isComponent(annotation) ? Component(metadata)(Comp) : Directive(metadata)(Comp), controlValueAccessors);
 }

@@ -98,6 +98,18 @@ class QueriesComponent {
 }
 
 @Component({
+    selector: "app-computed-property",
+    template: "<div></div>"
+})
+class ComputedPropertyComponent {
+
+    get computed(): number {
+        throw new Error();
+    }
+
+}
+
+@Component({
     selector: "app-root",
     template: `
         <app-no-inputs-no-outputs class="a-class"></app-no-inputs-no-outputs>
@@ -108,6 +120,7 @@ class QueriesComponent {
         <app-multiple-instances [anInput]="'anInputA2'" class="a-class"></app-multiple-instances>
         <app-referenced #ref></app-referenced>
         <app-queries><div #contentDiv></div></app-queries>
+        <app-computed-property></app-computed-property>
     `
 })
 class AppComponent {
@@ -140,6 +153,7 @@ describe("ng-stubs - components ", () => {
     let multipleInstancesComponentStub: StubbedComponent<MultipleInstancesComponent>;
     let referencedComponentStub: StubbedComponent<ReferencedComponent>;
     let queriesComponentStub: StubbedComponent<QueriesComponent>;
+    let computedPropertyComponentStub: StubbedComponent<ComputedPropertyComponent>;
 
     beforeEach(async(() => {
         noInputsNoOutputsComponentStub = ComponentStub(NoInputsNoOutputsComponent);
@@ -148,6 +162,7 @@ describe("ng-stubs - components ", () => {
         multipleInstancesComponentStub = ComponentStub(MultipleInstancesComponent);
         referencedComponentStub = ComponentStub(ReferencedComponent);
         queriesComponentStub = ComponentStub(QueriesComponent);
+        computedPropertyComponentStub = ComponentStub(ComputedPropertyComponent);
 
         TestBed.configureTestingModule({
             imports: [FormsModule],
@@ -158,6 +173,7 @@ describe("ng-stubs - components ", () => {
                 multipleInstancesComponentStub.type,
                 referencedComponentStub.type,
                 queriesComponentStub.type,
+                computedPropertyComponentStub.type,
                 AppComponent
             ],
         }).compileComponents();
@@ -169,7 +185,7 @@ describe("ng-stubs - components ", () => {
         fixture.detectChanges();
     });
 
-    it("supports components without inputs and outputs", () => {
+    fit("supports components without inputs and outputs", () => {
         expect(noInputsNoOutputsComponentStub.instance).toBeDefined();
     });
 
