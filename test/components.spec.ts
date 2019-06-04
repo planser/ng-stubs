@@ -185,7 +185,7 @@ describe("ng-stubs - components ", () => {
         fixture.detectChanges();
     });
 
-    fit("supports components without inputs and outputs", () => {
+    it("supports components without inputs and outputs", () => {
         expect(noInputsNoOutputsComponentStub.instance).toBeDefined();
     });
 
