@@ -102,7 +102,7 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
     .filter(p => p != "constructor")
     .filter(p => Comp.prototype.hasOwnProperty(p) == false)
     .forEach(p => {
-        // TODO: Can we just ignore computed properties? Is it an implementaiton detail? What about readonly properties? Is it tackled by the interface anyway as we would get a compile error anyway?
+        // TODO: Can we just ignore computed properties? Is it an implementation detail? What about readonly properties? Is it tackled by the interface as we would get a compile error anyway?
         if (isComputedProperty(Comp.prototype, p)) {
             spyOnComputedProperty(Comp.prototype, p);
         } else {
