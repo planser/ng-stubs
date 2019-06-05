@@ -12,7 +12,7 @@ import {
     outputAnnotationsBindingsFor,
     outputPropMetadataBindingsFor,
     providesNgValueAccessor,
-    spyOnComputedProperty,
+    stubComputedProperty,
     spyOnMethod
 } from './util';
 import {
@@ -102,9 +102,8 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
     .filter(p => p != "constructor")
     .filter(p => Comp.prototype.hasOwnProperty(p) == false)
     .forEach(p => {
-        // TODO: Can we just ignore computed properties? Is it an implementation detail? What about readonly properties? Is it tackled by the interface as we would get a compile error anyway?
         if (isComputedProperty(Comp.prototype, p)) {
-            spyOnComputedProperty(Comp.prototype, p);
+            stubComputedProperty(Comp.prototype, p);
         } else {
             spyOnMethod(Comp.prototype, p);
         }

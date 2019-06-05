@@ -28,12 +28,12 @@ export function isComputedProperty(target, property): boolean {
   return isFunction(descriptor, "get") || isFunction(descriptor, "set");
 }
 
-export function spyOnComputedProperty(target, property): void {
+export function stubComputedProperty(target, property): void {
   const descriptor = Object.getOwnPropertyDescriptor(target, property);
 
   Object.defineProperty(target, property, {
-    get: isFunction(descriptor, "get") ? createSpy() : undefined,
-    set: isFunction(descriptor, "set") ? createSpy() : undefined
+    get: isFunction(descriptor, "get") ? function() {} : undefined,
+    set: isFunction(descriptor, "set") ? function() {} : undefined
   });
 }
 
