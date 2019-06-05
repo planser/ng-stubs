@@ -8,12 +8,11 @@ import {
     inputAnnotationsBindingsFor,
     inputPropMetadataBindingsFor,
     isComponent,
-    isComputedProperty,
     outputAnnotationsBindingsFor,
     outputPropMetadataBindingsFor,
     providesNgValueAccessor,
     stubComputedProperty,
-    spyOnMethod
+    spyOnMethod, getPropertyAccessorInfo
 } from './util';
 import {
     Component,
@@ -102,8 +101,10 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
     .filter(p => p != "constructor")
     .filter(p => Comp.prototype.hasOwnProperty(p) == false)
     .forEach(p => {
-        if (isComputedProperty(Comp.prototype, p)) {
-            stubComputedProperty(Comp.prototype, p);
+        const info = getPropertyAccessorInfo(component.prototype, p);
+
+        if (info) {
+            stubComputedProperty(Comp.prototype, p, info.hasGetter, info.hasSetter);
         } else {
             spyOnMethod(Comp.prototype, p);
         }
