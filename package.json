@@ -35,26 +35,26 @@
   "author": "Peter Lanser",
   "license": "MIT",
   "devDependencies": {
-    "@angular/common": "^7.0.2",
-    "@angular/compiler": "^7.0.2",
-    "@angular/core": "^7.0.2",
-    "@angular/forms": "^7.0.2",
-    "@angular/platform-browser": "^7.0.2",
-    "@angular/platform-browser-dynamic": "^7.0.2",
+    "@angular/common": "^8.0.0",
+    "@angular/compiler": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/forms": "^8.0.0",
+    "@angular/platform-browser": "^8.0.0",
+    "@angular/platform-browser-dynamic": "^8.0.0",
     "@types/jest": "^22.1.1",
     "jest": "^22.1.4",
     "jest-zone-patch": "0.0.8",
-    "rxjs": "~6.3.3",
+    "rxjs": "~6.4.0",
     "ts-jest": "^22.0.3",
-    "typescript": "~3.1.6",
-    "zone.js": "^0.8.4"
+    "typescript": "~3.4.3rm -",
+    "zone.js": "^0.9.1"
   },
   "peerDependencies": {
-    "@angular/common": "^7.0.2",
-    "@angular/compiler": "^7.0.2",
-    "@angular/core": "^7.0.2",
-    "@angular/forms": "^7.0.2",
-    "@angular/platform-browser": "^7.0.2",
-    "@angular/platform-browser-dynamic": "^7.0.2"
+    "@angular/common": "^8.0.0",
+    "@angular/compiler": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/forms": "^8.0.0",
+    "@angular/platform-browser": "^8.0.0",
+    "@angular/platform-browser-dynamic": "^8.0.0"
   }
 }

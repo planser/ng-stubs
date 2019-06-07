@@ -94,7 +94,7 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
     });
   });
 
-  contentChildPropMetadataQueriesFor(component).forEach(q => ContentChild(q.query.selector, { read: q.query.read })(Comp.prototype, q.propName));
+  contentChildPropMetadataQueriesFor(component).forEach(q => ContentChild(q.query.selector, { read: q.query.read, static: q.query.static })(Comp.prototype, q.propName));
   contentChildrenPropMetadataQueriesFor(component).forEach(q => ContentChildren(q.query.selector, { read: q.query.read })(Comp.prototype, q.propName));
 
   Object.keys(component.prototype)
