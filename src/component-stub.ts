@@ -11,8 +11,7 @@ import {
     outputAnnotationsBindingsFor,
     outputPropMetadataBindingsFor,
     providesNgValueAccessor,
-    stubComputedProperty,
-    spyOnMethod, getPropertyAccessorInfo
+    spyOnMethod, isMethod
 } from './util';
 import {
     Component,
@@ -100,12 +99,10 @@ export function ComponentStub<T>(component: Type<T>, stubOptions?: StubOptions):
   Object.getOwnPropertyNames(component.prototype)
     .filter(p => p != "constructor")
     .filter(p => Comp.prototype.hasOwnProperty(p) == false)
-    .forEach(p => {
-        const info = getPropertyAccessorInfo(component.prototype, p);
-
-        if (info) {
-            stubComputedProperty(Comp.prototype, p, info.hasGetter, info.hasSetter);
-        } else {
+    .forEach(p => {;
+        if (isMethod(component.prototype, p)) {
+            // Is it correct to use the prototype here?
+            // What happens eg if we have 2 instances, for instance 1 something is called and I check to have been called on instance 2?
             spyOnMethod(Comp.prototype, p);
         }
     });

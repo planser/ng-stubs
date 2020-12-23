@@ -4,6 +4,8 @@ import { By } from '@angular/platform-browser';
 import { async, ComponentFixture, TestBed, fakeAsync } from "@angular/core/testing";
 import { StubbedComponent } from "../src/stubbed-component";
 import { ComponentStub } from "../src/component-stub";
+import getOwnPropertyDescriptor = Reflect.getOwnPropertyDescriptor;
+import getPrototypeOf = Reflect.getPrototypeOf;
 
 @Component({
     selector: "app-no-inputs-no-outputs",
@@ -98,13 +100,13 @@ class QueriesComponent {
 }
 
 @Component({
-    selector: "app-computed-property",
+    selector: "app-setter-only-property",
     template: "<div></div>"
 })
-class ComputedPropertyComponent {
+class SetterOnlyPropertyComponent {
 
-    get computed(): number {
-        throw new Error();
+    @Input()
+    set value(value: string) {
     }
 
 }
@@ -120,7 +122,7 @@ class ComputedPropertyComponent {
         <app-multiple-instances [anInput]="'anInputA2'" class="a-class"></app-multiple-instances>
         <app-referenced #ref></app-referenced>
         <app-queries><div #contentDiv></div></app-queries>
-        <app-computed-property></app-computed-property>
+        <app-setter-only-property [value]="'a-value'"></app-setter-only-property>
     `
 })
 class AppComponent {
@@ -153,7 +155,7 @@ describe("ng-stubs - components ", () => {
     let multipleInstancesComponentStub: StubbedComponent<MultipleInstancesComponent>;
     let referencedComponentStub: StubbedComponent<ReferencedComponent>;
     let queriesComponentStub: StubbedComponent<QueriesComponent>;
-    let computedPropertyComponentStub: StubbedComponent<ComputedPropertyComponent>;
+    let setterOnlyPropertyComponentStub: StubbedComponent<SetterOnlyPropertyComponent>;
 
     beforeEach(async(() => {
         noInputsNoOutputsComponentStub = ComponentStub(NoInputsNoOutputsComponent);
@@ -162,7 +164,7 @@ describe("ng-stubs - components ", () => {
         multipleInstancesComponentStub = ComponentStub(MultipleInstancesComponent);
         referencedComponentStub = ComponentStub(ReferencedComponent);
         queriesComponentStub = ComponentStub(QueriesComponent);
-        computedPropertyComponentStub = ComponentStub(ComputedPropertyComponent);
+        setterOnlyPropertyComponentStub = ComponentStub(SetterOnlyPropertyComponent);
 
         TestBed.configureTestingModule({
             imports: [FormsModule],
@@ -173,7 +175,7 @@ describe("ng-stubs - components ", () => {
                 multipleInstancesComponentStub.type,
                 referencedComponentStub.type,
                 queriesComponentStub.type,
-                computedPropertyComponentStub.type,
+                setterOnlyPropertyComponentStub.type,
                 AppComponent
             ],
         }).compileComponents();
@@ -261,4 +263,7 @@ describe("ng-stubs - components ", () => {
         expect(queriesComponentStub.instance.viewChildren).not.toBeDefined();
     });
 
+    it("supports checking the value of setter only properties", () => {
+        expect(setterOnlyPropertyComponentStub.instance.value).toEqual("a-value");
+    });
 });

@@ -19,29 +19,9 @@ export function isComponent(a: any): boolean {
   return a.ngMetadataName == "Component";
 }
 
-export function isFunction(target, property): boolean {
-  return target && property && target[property] && {}.toString.call(target[property]) === '[object Function]';
-}
-
-export function getPropertyAccessorInfo(target, property): { hasGetter: boolean, hasSetter: boolean } {
+export function isMethod(target, property): boolean {
   const descriptor = Object.getOwnPropertyDescriptor(target, property);
-
-  if (descriptor.hasOwnProperty("get") == false && descriptor.hasOwnProperty("set") == false) {
-    return null
-  } else {
-    return {
-      hasGetter: isFunction(descriptor, "get"),
-      hasSetter: isFunction(descriptor, "set")
-    }
-  }
-
-}
-
-export function stubComputedProperty(target, property, stubGetter, stubSetter): void {
-  Object.defineProperty(target, property, {
-    get: stubGetter ? function() {} : undefined,
-    set: stubSetter ? function() {} : undefined
-  });
+  return descriptor.hasOwnProperty("get") == false && descriptor.hasOwnProperty("set") == false;
 }
 
 export function spyOnMethod(target, property): void {
