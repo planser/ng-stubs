@@ -1,6 +1,6 @@
 {
   "name": "ng-stubs",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "description": "",
   "main": "dist/index.js",
   "repository": {
@@ -35,12 +35,12 @@
   "author": "Peter Lanser",
   "license": "MIT",
   "devDependencies": {
-    "@angular/common": "^9.0.0",
-    "@angular/compiler": "^9.0.0",
-    "@angular/core": "^9.0.0",
-    "@angular/forms": "^9.0.0",
-    "@angular/platform-browser": "^9.0.0",
-    "@angular/platform-browser-dynamic": "^9.0.0",
+    "@angular/common": "^10.0.0",
+    "@angular/compiler": "^10.0.0",
+    "@angular/core": "^10.0.0",
+    "@angular/forms": "^10.0.0",
+    "@angular/platform-browser": "^10.0.0",
+    "@angular/platform-browser-dynamic": "^10.0.0",
     "@types/jest": "^22.1.1",
     "jest": "^22.1.4",
     "jest-zone-patch": "0.0.8",
@@ -50,11 +50,11 @@
     "zone.js": "0.10.3"
   },
   "peerDependencies": {
-    "@angular/common": "^9.0.0",
-    "@angular/compiler": "^9.0.0",
-    "@angular/core": "^9.0.0",
-    "@angular/forms": "^9.0.0",
-    "@angular/platform-browser": "^9.0.0",
-    "@angular/platform-browser-dynamic": "^9.0.0"
+    "@angular/common": "^10.0.0",
+    "@angular/compiler": "^10.0.0",
+    "@angular/core": "^10.0.0",
+    "@angular/forms": "^10.0.0",
+    "@angular/platform-browser": "^10.0.0",
+    "@angular/platform-browser-dynamic": "^10.0.0"
   }
 }
