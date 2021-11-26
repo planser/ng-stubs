@@ -1,6 +1,6 @@
 {
   "name": "ng-stubs",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "",
   "main": "dist/index.js",
   "repository": {
@@ -14,15 +14,10 @@
     "test": "jest"
   },
   "jest": {
-    "testRegex": "(\\.(test|spec))\\.(ts|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
-    "transform": {
-      "^.+\\.(ts)$": "<rootDir>/test/preprocessor.js"
-    }
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setup-jest.js"
+    ]
   },
   "types": "dist/index.d.ts",
   "keywords": [
@@ -35,26 +30,26 @@
   "author": "Peter Lanser",
   "license": "MIT",
   "devDependencies": {
-    "@angular/common": "^12.0.0",
-    "@angular/compiler": "^12.0.0",
-    "@angular/core": "^12.0.0",
-    "@angular/forms": "^12.0.0",
-    "@angular/platform-browser": "^12.0.0",
-    "@angular/platform-browser-dynamic": "^12.0.0",
-    "@types/jest": "^22.1.1",
-    "jest": "^22.1.4",
-    "jest-zone-patch": "0.0.8",
+    "@angular/common": "^13.0.0",
+    "@angular/compiler": "^13.0.0",
+    "@angular/core": "^13.0.0",
+    "@angular/forms": "^13.0.0",
+    "@angular/platform-browser": "^13.0.0",
+    "@angular/platform-browser-dynamic": "^13.0.0",
+    "@types/jest": "^27.0.3",
+    "jest": "^27.3.1",
+    "jest-preset-angular": "^11.0.1",
     "rxjs": "6.5.5",
-    "ts-jest": "^22.0.3",
-    "typescript": "3.8.3",
+    "ts-jest": "^27.0.7",
+    "typescript": "4.4.4",
     "zone.js": "0.11.4"
   },
   "peerDependencies": {
-    "@angular/common": "^12.0.0",
-    "@angular/compiler": "^12.0.0",
-    "@angular/core": "^12.0.0",
-    "@angular/forms": "^12.0.0",
-    "@angular/platform-browser": "^12.0.0",
-    "@angular/platform-browser-dynamic": "^12.0.0"
+    "@angular/common": "^13.0.0",
+    "@angular/compiler": "^13.0.0",
+    "@angular/core": "^13.0.0",
+    "@angular/forms": "^13.0.0",
+    "@angular/platform-browser": "^13.0.0",
+    "@angular/platform-browser-dynamic": "^13.0.0"
   }
 }
